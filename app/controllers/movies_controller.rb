@@ -1,17 +1,9 @@
 class MoviesController < ApplicationController
+  has_scope :by_year_range, using: %i[min_year max_year], type: :hash
+  has_scope :by_keyword
+  has_scope :by_rating
+
   def index
-    # check if params[:query]
-
-    if params[:query].present?
-      # SELECT * FROM movies WHERE title="superman"
-      if params[:min_year].blank?
-        @movies = Movie.by_keyword(params[:query])
-      else
-        @movies = Movie.by_keyword(params[:query]).by_year_range(params[:min_year], params[:max_year])
-      end
-    else
-      @movies = Movie.all
-    end
-
+    @movies = apply_scopes(Movie).all
   end
 end
