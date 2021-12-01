@@ -5,6 +5,10 @@ class Movie < ApplicationRecord
     "#{director.first_name} #{director.last_name}"
   end
 
+  scope :by_year_range, -> (min_year, max_year) do
+    where('year >= ? AND year <= ?', min_year.to_i, max_year.to_i)
+  end
+
   scope :by_keyword, -> (given_keyword) do
     sql_query = " \
       movies.title ILIKE ? \

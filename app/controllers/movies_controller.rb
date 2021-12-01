@@ -4,7 +4,11 @@ class MoviesController < ApplicationController
 
     if params[:query].present?
       # SELECT * FROM movies WHERE title="superman"
-      @movies = Movie.by_keyword(params[:query])
+      if params[:min_year].blank?
+        @movies = Movie.by_keyword(params[:query])
+      else
+        @movies = Movie.by_keyword(params[:query]).by_year_range(params[:min_year], params[:max_year])
+      end
     else
       @movies = Movie.all
     end
